@@ -1,11 +1,11 @@
-// Loading in sample.json file
+// Load in sample.json file
 const sample_json = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json"
 
-// Promise Pending
+// Data Promise
 const dataPromise = d3.json(sample_json);
 console.log("Data Promise: ", dataPromise);
 
-// Fetch the JSON data and console log it
+// Fetch the JSON data and console  to log it
 d3.json(sample_json).then(function(data) {
     console.log(data);
     let dropdown_selector = d3.select('#selDataset');
@@ -19,33 +19,33 @@ d3.json(sample_json).then(function(data) {
     buildmetadata(data.names[0])
   });
 
-// Grabbing the data needed to build the charts
+// Fetch data needed to build the charts
 function build_charts(sampleid){
   d3.json(sample_json).then(function(data) {
     const sample = data.samples.filter(asample => asample.id==sampleid)[0]
     console.log(sample)
 
-// Creating horizontal bar chart
+// Create horizontal bar chart
     let bar = {
       // Grabbing top 10 OTU's data using slice()
       x: sample.sample_values.slice(0,10).reverse(),
       y: sample.otu_ids.slice(0,10).map(otu_id=>"OTU "+otu_id).reverse(),
       text: sample.otu_labels.slice(0,10).reverse(),
-      // Switches to horizonal orientation
+      // Switching to horizonal
       orientation: 'h',
-      // Set chart type as bar
+      // Set chart as bar
       type: 'bar'
     };
-    // Print the bar chart
+    // Print bar chart
     Plotly.newPlot("bar", [bar]);
 
-// Creating bubble chart
+// Create bubble chart
     let bubble = {
-      // Grabbing OTU data
+      // Fetch OTU data
       x: sample.otu_ids,
       y: sample.sample_values,
       text: sample.otu_labels,
-      // Creating markers
+      // Create markers
       mode: 'markers',
       marker: {
         size: sample.sample_values,
@@ -53,19 +53,19 @@ function build_charts(sampleid){
         colorscale: "Earth"
       }
     };
-    // Print the bubble chart
+    // Print bubble chart
     Plotly.newPlot("bubble", [bubble]);
   });
 };
 
-// Grabbing metadata to insert into demographic info section.
+// Get metadata for demographic info
 function buildmetadata(sampleid){
   d3.json(sample_json).then(function(data) {
     const metadata = data.metadata.filter(asample => asample.id==sampleid)[0]
     console.log(metadata)
-    // Inserting metadata into demographic info section.
+    // Insert metadata into demographic info
     const panel = d3.select("#sample-metadata")
-    // Clears the metadata and reruns functions when dropdown selector is changed
+    // Clear metadata to run functions when dropdown selector is changed
     panel.html("")
     for (key in metadata){
       panel.append("p").text(key.toUpperCase()+": "+metadata[key])
