@@ -133,21 +133,6 @@ function optionChanged(sampleId) {
     showData(sampleId);
 }
 
-// Grabbing metadata to insert into demographic info section.
-function buildmetadata(sampleid){
-  d3.json(sample_json).then(function(data) {
-    const metadata = data.metadata.filter(asample => asample.id==sampleid)[0]
-    console.log(metadata)
-    // Inserting metadata into demographic info section.
-    const panel = d3.select("#sample-metadata")
-    // Clears the metadata and reruns functions when dropdown selector is changed
-    panel.html("")
-    for (key in metadata){
-      panel.append("p").text(key.toUpperCase()+": "+metadata[key])
-    };
-  })
-};
-
 // initialize function 
 function init() {
     console.log(init);
